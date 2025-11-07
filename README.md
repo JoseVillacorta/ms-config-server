@@ -1,45 +1,45 @@
-# MS Config Server
+# Config Server
 
-Servidor de configuración centralizada para el Sistema de Gestión de Pedidos.
+Servidor de configuración centralizada para microservicios usando Spring Cloud Config.
 
-## Descripción
+## Funcionalidades
 
-Microservicio que proporciona configuración centralizada usando Spring Cloud Config Server. Gestiona configuraciones para múltiples perfiles (dev, qa, prd) desde un repositorio Git.
-
-## Tecnologías
-
-- **Java**: 21
-- **Spring Boot**: 3.3.3
-- **Spring Cloud Config**: 4.3.0
-- **Gradle**: 8.0+
-
-## Configuración
-
-### Variables de Entorno
-- `GIT_REPO_URI`: URI del repositorio de configuraciones
-- `GIT_USERNAME`: Usuario Git 
-- `GIT_PASSWORD`: Token Git 
-- `CONFIG_USERNAME`: Usuario para acceso al config server
-- `CONFIG_PASSWORD`: Contraseña para acceso al config server
-
-### Perfiles
-- **local**: Desarrollo local (puerto 8888)
-- **qa**: Ambiente QA (puerto 8888)
-- **prod**: Producción (puerto 8888)
-
-## Ejecución
-
-```bash
-./gradlew bootRun --args="--spring.profiles.active=local"
-```
+- **Repositorio Git local**: Sirve configuraciones desde `config-repo/`
+- **Perfiles múltiples**: dev, docker, qa, prod
+- **Configuración externa**: Variables de entorno y archivos YAML
+- **Actualización en caliente**: Refresh automático de configuraciones
 
 ## Endpoints
 
-- `GET /ms-productos/dev` - Configuración productos desarrollo
-- `GET /ms-pedidos/dev` - Configuración pedidos desarrollo
-- `GET /actuator/health` - Health check
+- `GET /{service-name}/{profile}` → Configuración específica
+- `GET /{service-name}/{profile}/{label}` → Con branch/tag específico
+- `POST /actuator/refresh` → Actualizar configuración en runtime
 
-## Seguridad
+## Configuración Docker
 
-- Usuario por defecto: `admin`
-- Contraseña configurable via variables de entorno
+- **Puerto**: 8888
+- **Perfil**: docker
+- **Repositorio**: `file:///${PROPERTIES_DIRECTORY}`
+- **Directorio**: `/config-repo` (montado como volumen)
+
+## Perfiles Soportados
+
+- **dev**: Desarrollo local
+- **docker**: Contenedores Docker
+- **qa/prod**: Ambientes superiores
+
+## Variables de Entorno
+
+- `PROPERTIES_DIRECTORY`: Ruta al directorio de configs
+- `SPRING_PROFILES_ACTIVE`: Perfil activo
+
+## Despliegue
+
+```bash
+docker-compose up --build ms-config-server
+```
+
+## Health Check
+
+- Endpoint: `http://localhost:8888/actuator/health`
+- Estado esperado: `{"status":"UP"}`
