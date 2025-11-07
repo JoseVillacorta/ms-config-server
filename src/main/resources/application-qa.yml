@@ -5,6 +5,7 @@ server:
     connection-timeout: 20000
     max-threads: 200
 
+
 spring:
   cloud:
     config:
@@ -69,12 +70,12 @@ management:
     refresh:
       enabled: true
 
-# Health checks integradas en la sección spring principal
-      server:
-        health:
-          enabled: true
-          repositories:
-            ms-productos:
-              label: qa
-            ms-pedidos:
-              label: qa
+# Health checks
+    server:
+      health:
+        enabled: true
+        repositories:
+          ms-productos:
+            label: qa
+          ms-pedidos:
+            label: qa

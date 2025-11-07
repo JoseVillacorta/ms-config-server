@@ -1,8 +1,10 @@
 spring:
   application:
-    name: ms-config-server
+    name: serverconfig
   profiles:
-    active: ${SPRING_PROFILE:dev}
+    active: ${SPRING_PROFILE:local}
+  security:
+    enabled: false
 
 # Configuración común para todos los perfiles
 management:
@@ -17,6 +19,6 @@ management:
 # Información de la aplicación
 info:
   app:
-    name: Config Server
+    name: ${spring.application.name}
     description: Spring Cloud Config Server
     version: 0.0.1-SNAPSHOT
