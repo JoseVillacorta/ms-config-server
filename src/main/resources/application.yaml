@@ -2,9 +2,7 @@ spring:
   application:
     name: serverconfig
   profiles:
-    active: ${SPRING_PROFILE:local}
-  security:
-    enabled: false
+    active: ${SPRING_PROFILE:dev}
 
 # Configuración común para todos los perfiles
 management:
