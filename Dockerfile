@@ -4,9 +4,10 @@ WORKDIR /app
 COPY . .
 RUN ./gradlew build -x test
 
-# Etapa de ejecución
+#Etapa de Ejecución
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=builder /app/build/libs/*.jar app.jar
-EXPOSE 8080
+#Define el puerto
+EXPOSE 8888
 ENTRYPOINT ["java", "-jar", "app.jar"]

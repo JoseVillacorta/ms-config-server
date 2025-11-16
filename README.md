@@ -1,45 +1,59 @@
-# Config Server
+# MS Config Server
 
-Servidor de configuración centralizada para microservicios usando Spring Cloud Config.
+Servidor de configuración centralizada con Spring Cloud Config para gestión de configuraciones de microservicios.
+
+- **Configuración Centralizada**: Todas las configuraciones en un solo lugar
+- **Perfiles Múltiples**: dev, qa, prod
+- **Refresh Automático**: Actualización de configuraciones sin restart
+- **Git Integration**: Configuraciones versionadas en Git
+- **Encryption**: Encriptación de propiedades sensibles
 
 ## Funcionalidades
+- **Configuration Repository**: Almacenamiento centralizado de configuraciones
+- **Environment Profiles**: Separación de configuraciones por entorno
+- **Refresh Endpoint**: Actualización dinámica de configuraciones
+- **Security**: Protección de configuraciones sensibles
 
-- **Repositorio Git local**: Sirve configuraciones desde `config-repo/`
-- **Perfiles múltiples**: dev, docker, qa, prod
-- **Configuración externa**: Variables de entorno y archivos YAML
-- **Actualización en caliente**: Refresh automático de configuraciones
+## Dependencias
 
-## Endpoints
+### Infraestructura
+- **Registry Service**: http://localhost:8761 (Eureka)
+- **Git Repository**: `config-repo/` (configuraciones)
 
-- `GET /{service-name}/{profile}` → Configuración específica
-- `GET /{service-name}/{profile}/{label}` → Con branch/tag específico
-- `POST /actuator/refresh` → Actualizar configuración en runtime
+## Ejecutar
 
-## Configuración Docker
+### Desarrollo Local
+```bash
+./gradlew bootRun --spring.profiles.active=dev
+```
 
-- **Puerto**: 8888
-- **Perfil**: docker
-- **Repositorio**: `file:///${PROPERTIES_DIRECTORY}`
-- **Directorio**: `/config-repo` (montado como volumen)
-
-## Perfiles Soportados
-
-- **dev**: Desarrollo local
-- **docker**: Contenedores Docker
-- **qa/prod**: Ambientes superiores
-
-## Variables de Entorno
-
-- `PROPERTIES_DIRECTORY`: Ruta al directorio de configs
-- `SPRING_PROFILES_ACTIVE`: Perfil activo
-
-## Despliegue
-
+### Docker
 ```bash
 docker-compose up --build ms-config-server
 ```
 
-## Health Check
+**Puerto**: 8888
 
-- Endpoint: `http://localhost:8888/actuator/health`
-- Estado esperado: `{"status":"UP"}`
+## Configuración
+
+### Perfiles Soportados
+- **dev**: Configuración de desarrollo
+- **qa**: Configuración de testing
+- **prod**: Configuración de producción
+
+### Repository Git
+- **Ubicación**: `config-repo/`
+- **Estructura**: `{service-name}-{profile}.yaml`
+
+## Verificación
+
+### Health Check
+```bash
+curl http://localhost:8888/actuator/health
+```
+
+### Servicios Configurados
+- **gateway-service**: `http://localhost:8888/gateway-service/dev`
+- **ms-productos-v2**: `http://localhost:8888/ms-productos-v2/dev`
+- **ms-pedidos**: `http://localhost:8888/ms-pedidos/dev`
+- **registry-service**: `http://localhost:8888/registry-service/dev`

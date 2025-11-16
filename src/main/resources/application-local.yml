@@ -14,6 +14,7 @@ spring:
           search-paths:
             - '{application}'
             - '{application}/{profile}'
+            - '{application}-{profile}.yml'
 
           # Forzar actualización en cada petición (útil en desarrollo)
           force-pull: true
@@ -22,6 +23,11 @@ spring:
       # Permitir sobrescribir configuraciones
       override-none: true
 
+  # Sin seguridad en local para facilitar desarrollo
+  security:
+    user:
+      name: admin
+      password: local123
 
 # Logging detallado para debugging
 logging:
